@@ -1,3 +1,16 @@
+<?php
+require_once('class/config.php');
+require_once('autoload.php');
+
+if(isset($_POST['email']) && isset($_POST['senha']) &&!empty($_POST['email']) && !empty($_POST['senha'])){
+    $email = limpaPost($_POST['email']);
+    $senha = limpaPost($_POST['senha']);
+    $login = new Login();
+    $login->auth($email,$senha);
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,21 +21,27 @@
     <title>Login</title>
 </head>
 <body>
-    <form>
+    <form method="POST>
         <h1>Login</h1>
+
+        <?php if(isset($login->erro["erro_geral"])){?>
+            <div class="erro-geral animate__animated animate__rubberBand">
+                <?php echo$login->erro["erro_geral"];?>
+            </div>
+        <?php } ?>
 
         <div class="input-group">
             <img class="input-icon" src="img/user.png">
-            <input type="email" placeholder="Digite seu email">
+            <input name="email" type="email" placeholder="Digite seu email" required>
         </div>
         
         <div class="input-group">
             <img class="input-icon" src="img/lock.png">
-            <input type="password" placeholder="Digite sua senha">
+            <input name="senha" type="password" placeholder="Digite sua senha" required>
         </div>
        
         <button class="btn-blue" type="submit">Fazer Login</button>
-        <a href="cadastrar.html">Ainda não tenho cadastro</a>
+        <a href="cadastrar.php">Ainda não tenho cadastro</a>
     </form>
 </body>
 </html>
